@@ -1,4 +1,4 @@
-package net.minpro.meditation2
+package net.minpro.meditation2.data
 
 data class ThemeData (
     val themeId: Int,

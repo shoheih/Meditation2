@@ -1,4 +1,4 @@
-package net.minpro.meditation2
+package net.minpro.meditation2.view.main
 
 
 import android.arch.lifecycle.Observer
@@ -15,7 +15,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_main.*
+import net.minpro.meditation2.R
 import net.minpro.meditation2.databinding.FragmentMainBinding
+import net.minpro.meditation2.util.PlayStatus
+import net.minpro.meditation2.viewmodel.MainViewModel
 
 
 /**

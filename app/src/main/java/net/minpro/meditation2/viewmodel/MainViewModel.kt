@@ -1,7 +1,10 @@
-package net.minpro.meditation2
+package net.minpro.meditation2.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import net.minpro.meditation2.model.UserSettings
+import net.minpro.meditation2.model.UserSettingsRepository
+import net.minpro.meditation2.util.PlayStatus
 
 class MainViewModel: ViewModel() {
 
@@ -37,6 +40,10 @@ class MainViewModel: ViewModel() {
         val seconds = timeSeconds - (minutes * 60)
         val secondsString = if (seconds < 10) "0" + seconds.toString() else seconds.toString()
         return minutesString + " : " + secondsString
+    }
+
+    fun setLevel(selectedItemId: Int) {
+        txtLevel.value = userSettingsRepository.setLevel(selectedItemId)
     }
 
 }

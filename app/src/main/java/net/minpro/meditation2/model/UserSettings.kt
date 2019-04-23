@@ -1,4 +1,4 @@
-package net.minpro.meditation2
+package net.minpro.meditation2.model
 
 data class UserSettings (
     var levelId: Int,
