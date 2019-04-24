@@ -3,6 +3,7 @@ package net.minpro.meditation2.model
 import android.content.Context
 import net.minpro.meditation2.MyApplication
 import net.minpro.meditation2.R
+import net.minpro.meditation2.data.ThemeData
 import net.minpro.meditation2.util.LevelId
 
 
@@ -49,5 +50,27 @@ class UserSettingsRepository {
         }
         editor.putInt(UserSettingsPrefKey.LEVEL_NAME_STR_ID.name, levelNameStrId).commit()
         return loadUserSettings().levelName
+    }
+
+    fun setTime(selectedItemId: Int): Int {
+        var selectedTime = when(selectedItemId) {
+            0 -> 5
+            1 -> 10
+            2 -> 15
+            3 -> 20
+            4 -> 30
+            5 -> 45
+            6 -> 60
+            else -> 30
+        }
+        editor.putInt(UserSettingsPrefKey.TIME.name, selectedTime).commit()
+        return loadUserSettings().time
+    }
+
+    fun setTheme(themeData: ThemeData) {
+        editor.putInt(UserSettingsPrefKey.THEME_ID.name, themeData.themeId).commit()
+        editor.putInt(UserSettingsPrefKey.THEME_NAME_STR_ID.name, themeData.themeNameResId).commit()
+        editor.putInt(UserSettingsPrefKey.THEME_RES_ID.name, themeData.themeLandPicResId).commit()
+        editor.putInt(UserSettingsPrefKey.THEME_SOUND_ID.name, themeData.themeSoundId).commit()
     }
 }

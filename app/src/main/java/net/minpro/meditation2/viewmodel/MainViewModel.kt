@@ -2,6 +2,7 @@ package net.minpro.meditation2.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import net.minpro.meditation2.data.ThemeData
 import net.minpro.meditation2.model.UserSettings
 import net.minpro.meditation2.model.UserSettingsRepository
 import net.minpro.meditation2.util.PlayStatus
@@ -44,6 +45,17 @@ class MainViewModel: ViewModel() {
 
     fun setLevel(selectedItemId: Int) {
         txtLevel.value = userSettingsRepository.setLevel(selectedItemId)
+    }
+
+    fun setTime(selectedItemId: Int) {
+        remainedTimeSeconds.value = userSettingsRepository.setTime(selectedItemId) * 60
+        displayTimeSeconds.value = changeTimeFormat(remainedTimeSeconds.value!!)
+    }
+
+    fun setTheme(themeData: ThemeData) {
+        userSettingsRepository.setTheme(themeData)
+        txtTheme.value = userSettingsRepository.loadUserSettings().themeName
+        themePicFileResId.value = userSettingsRepository.loadUserSettings().themeResId
     }
 
 }

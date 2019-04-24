@@ -8,24 +8,26 @@ import android.support.v7.app.AlertDialog
 import net.minpro.meditation2.R
 import net.minpro.meditation2.viewmodel.MainViewModel
 
-class LevelSelectDialog: DialogFragment() {
+class TimeSelectDialog: DialogFragment() {
 
     var selectedItemId = 0
-
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
 
         val dialog = AlertDialog.Builder(activity!!).apply {
-            setTitle(R.string.select_level)
-            setSingleChoiceItems(R.array.level_list, selectedItemId) { dialog, which ->
+            setTitle(R.string.select_time)
+            setSingleChoiceItems(R.array.time_list, selectedItemId) { dialog, which ->
                 selectedItemId = which
-                viewModel.setLevel(selectedItemId)
+                viewModel.setTime(selectedItemId)
                 dialog.dismiss()
             }
         }.create()
+
+
+
         return dialog
     }
 }

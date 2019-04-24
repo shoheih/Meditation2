@@ -17,7 +17,10 @@ class MyApplication: Application() {
     private fun setThemeData(): ArrayList<ThemeData> {
         return arrayListOf(
             ThemeData(
-                ThemeId.SILENT, R.string.theme_silent, R.drawable.pic_nobgm, R.drawable.pic_nobgm_sq,
+                ThemeId.SILENT,
+                R.string.theme_silent,
+                R.drawable.pic_nobgm,
+                R.drawable.pic_nobgm_sq,
                 NO_BGM
             ),
             ThemeData(
