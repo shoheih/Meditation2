@@ -51,4 +51,9 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     implementation 'com.google.android.exoplayer:exoplayer:2.8.1'
+
+    // Koin for Android
+    implementation 'org.koin:koin-android:1.0.2'
+    // Android Architecture ViewModel feature
+    implementation 'org.koin:koin-android-viewmodel:1.0.2'
 }

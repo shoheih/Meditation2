@@ -2,7 +2,6 @@ package net.minpro.meditation2.view.main
 
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -19,6 +18,7 @@ import net.minpro.meditation2.R
 import net.minpro.meditation2.databinding.FragmentMainBinding
 import net.minpro.meditation2.util.PlayStatus
 import net.minpro.meditation2.viewmodel.MainViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
 /**
@@ -27,7 +27,7 @@ import net.minpro.meditation2.viewmodel.MainViewModel
  */
 class MainFragment : Fragment() {
 
-    lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by sharedViewModel()
     private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
@@ -43,7 +43,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
 
         binding.apply {
             viewmodel = viewModel

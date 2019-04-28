@@ -1,7 +1,6 @@
 package net.minpro.meditation2.view.main
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -14,12 +13,20 @@ import net.minpro.meditation2.view.dialog.LevelSelectDialog
 import net.minpro.meditation2.view.dialog.ThemeSelectDialog
 import net.minpro.meditation2.view.dialog.TimeSelectDialog
 import net.minpro.meditation2.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
 
-    private var musicServiceHelper: MusicServiceHelper? = null
+    //private var musicServiceHelper: MusicServiceHelper? = null
+    private val musicServiceHelper: MusicServiceHelper by inject()
+
+    private val mainFragment: MainFragment by inject()
+    private val levelSelectDialog: LevelSelectDialog by inject()
+    private val themeSelectDialog: ThemeSelectDialog by inject()
+    private val timeSelectDialog: TimeSelectDialog by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -30,26 +37,26 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.screen_container,
-                        MainFragment()
+                        mainFragment
                     )
                     .commit()
         }
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         observeViewModel()
 
         btmNavi.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.item_select_level -> {
-                    LevelSelectDialog().show(supportFragmentManager, FragmentTag.LEVEL_SELECT.name)
+                    levelSelectDialog.show(supportFragmentManager, FragmentTag.LEVEL_SELECT.name)
                     true
                 }
                 R.id.item_select_theme -> {
-                    ThemeSelectDialog().show(supportFragmentManager, FragmentTag.THEME_SELECT.name)
+                    themeSelectDialog.show(supportFragmentManager, FragmentTag.THEME_SELECT.name)
                     true
                 }
                 R.id.item_select_time -> {
-                    TimeSelectDialog().show(supportFragmentManager, FragmentTag.TIME_SELECT.name)
+                    timeSelectDialog.show(supportFragmentManager, FragmentTag.TIME_SELECT.name)
                     true
                 }
                 else -> {
@@ -58,13 +65,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        musicServiceHelper = MusicServiceHelper(this)
-        musicServiceHelper?.bindService()
+        //musicServiceHelper = MusicServiceHelper(this)
+        musicServiceHelper.bindService()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        musicServiceHelper?.stopBgm()
+        musicServiceHelper.stopBgm()
         finish()
     }
 
@@ -79,22 +86,22 @@ class MainActivity : AppCompatActivity() {
                 }
                 PlayStatus.RUNNING -> {
                     btmNavi.visibility = View.INVISIBLE
-                    musicServiceHelper?.startBgm()
+                    musicServiceHelper.startBgm()
                 }
                 PlayStatus.PAUSE -> {
                     btmNavi.visibility = View.INVISIBLE
-                    musicServiceHelper?.stopBgm()
+                    musicServiceHelper.stopBgm()
                 }
                 PlayStatus.END -> {
                     btmNavi.visibility = View.VISIBLE
-                    musicServiceHelper?.stopBgm()
-                    musicServiceHelper?.ringFinalGong()
+                    musicServiceHelper.stopBgm()
+                    musicServiceHelper.ringFinalGong()
                 }
             }
         })
 
         viewModel.volume.observe(this, Observer { volume ->
-            musicServiceHelper?.setVolume(volume!!)
+            musicServiceHelper.setVolume(volume!!)
         })
     }
 }
