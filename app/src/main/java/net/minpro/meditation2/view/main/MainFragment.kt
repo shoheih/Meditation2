@@ -48,7 +48,6 @@ class MainFragment : Fragment() {
         binding.apply {
             viewmodel = viewModel
             setLifecycleOwner(activity)
-
         }
 
         viewModel.initParameters()
@@ -59,8 +58,26 @@ class MainFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.playStatus.observe(this, Observer { status ->
+            // アプリの見た目の部分の制御
+            updateUi(status!!)
+
+            // アプリの動きの部分の制御
             when (status) {
-                PlayStatus.BEFORE_START -> btnPlay.setBackgroundResource(R.drawable.button_play)
+                PlayStatus.BEFORE_START -> {
+
+                }
+                PlayStatus.ON_START -> {
+                    viewModel.countDownBeforeStart()
+                }
+                PlayStatus.RUNNING -> {
+                    viewModel.startMeditation()
+                }
+                PlayStatus.PAUSE -> {
+                    viewModel.pauseMeditation()
+                }
+                PlayStatus.END -> {
+                    viewModel.finishMeditation()
+                }
             }
         })
         viewModel.themePicFileResId.observe(this, Observer { themePicResId ->
@@ -68,15 +85,70 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun loadBackgroundImage(
-        mainFragment: MainFragment,
-        themePicResId: Int?,
-        meditation_screen: ConstraintLayout?
-    ) {
-        Glide.with(mainFragment).load(themePicResId).into(object : SimpleTarget<Drawable>() {
-            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                meditation_screen?.background = resource
+    private fun updateUi(status: Int) {
+        when (status) {
+            PlayStatus.BEFORE_START -> {
+                binding.apply {
+                    btnPlay.apply {
+                        visibility = View.VISIBLE
+                        setBackgroundResource(R.drawable.button_pause)
+                    }
+                    btnFinish.visibility = View.INVISIBLE
+                    txtShowMenu.visibility = View.INVISIBLE
+                }
             }
-        })
+            PlayStatus.ON_START -> {
+                binding.apply {
+                    btnPlay.visibility = View.INVISIBLE
+                    btnFinish.visibility = View.INVISIBLE
+                    txtShowMenu.visibility = View.VISIBLE
+                }
+            }
+            PlayStatus.RUNNING -> {
+                binding.apply {
+                    btnPlay.apply {
+                        visibility = View.VISIBLE
+                        setBackgroundResource(R.drawable.button_pause)
+                    }
+                    btnFinish.visibility = View.INVISIBLE
+                    txtShowMenu.visibility = View.VISIBLE
+                }
+            }
+            PlayStatus.PAUSE -> {
+                binding.apply {
+                    btnPlay.apply {
+                        visibility = View.VISIBLE
+                        setBackgroundResource(R.drawable.button_play)
+                    }
+                    btnFinish.apply {
+                        visibility = View.VISIBLE
+                        setBackgroundResource(R.drawable.button_finish)
+                    }
+                    txtShowMenu.visibility = View.VISIBLE
+                }
+            }
+            PlayStatus.END -> {
+
+            }
+        }
     }
+
+//    private fun loadBackgroundImage(
+//        mainFragment: MainFragment,
+//        themePicResId: Int?,
+//        meditation_screen: ConstraintLayout?
+//    ) {
+//        Glide.with(mainFragment).load(themePicResId).into(object : SimpleTarget<Drawable>() {
+//            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+//                meditation_screen?.background = resource
+//            }
+//        })
+//    }
+private fun loadBackgroundImage(mainFragment: MainFragment, themePicResId: Int?, meditation_screen: ConstraintLayout?) {
+    Glide.with(mainFragment).load(themePicResId).into(object : SimpleTarget<Drawable>() {
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+            meditation_screen?.background = resource
+        }
+    })
+}
 }
